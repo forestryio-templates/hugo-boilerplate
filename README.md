@@ -1,5 +1,5 @@
-# Jekyll Boilerplate
-**A Jekyll boilerplate for building modern websites 🌲**
+# Hugo Boilerplate
+**A Hugo boilerplate for building modern websites 🌲**
 
 This boilerplate wraps [Hugo](gohugo.io) with [Gulp](https://gulpjs.com/) & [Webpack](https://webpack.js.org/) as your asset pipeline.
 
