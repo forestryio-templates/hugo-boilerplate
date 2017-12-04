@@ -2,8 +2,8 @@
 *.DS_Store
 node_modules/
 
-# Ensure Jekyll builds aren't committed to Git
-_site/
-site/_site/
+# Ensure Hugo builds aren't committed to Git
+public/
+hugo/public/
 dist/
 .tmp/
