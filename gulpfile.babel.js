@@ -108,6 +108,9 @@ gulp.task("server", ["hugo", "css", "js"], () => {
   gulp.watch([path.normalize(hugoDir + "/**/*"), "!" + path.normalize(hugoDir + "/{js,css}/**/*")], ["hugo"])
 })
 
+// Set default gulp task to development server
+gulp.task("default", ["server"])
+
 /**
  * Helper functions
  */
