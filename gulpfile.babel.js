@@ -22,13 +22,13 @@ const hugoDir = "hugo/"
 const tmpDir = ".tmp/"
 const buildDir = "dist/"
 
-// Build Arguments
-const argsDefault = ["-v", "--source", hugoDir, "--destination", (isProduction) ? buildDir : tmpDir]
-const argsDevelopment = ["--buildDrafts", "--buildFuture", "--buildExpired"]
-
 // Conditionals
 const env = (process.env.NODE_ENV) ? process.env.NODE_ENV : "development"
 const isProduction = (env === "production")
+
+// Build Arguments
+const argsDefault = ["-v", "--source", hugoDir, "--destination", (isProduction) ? buildDir : tmpDir]
+const argsDevelopment = ["--buildDrafts", "--buildFuture", "--buildExpired"]
 
 // Make env available to Hugo
 process.env.HUGO_ENV = env
@@ -86,7 +86,7 @@ gulp.task("js", (cb) => {
   // Generate development JS, send to .tmp/
   const development = gulp.src(src)
     .pipe(gulpif(!isProduction, named()))
-    .pipe((!isProduction, webpack(Object.assign(webpackConfig, {devtool: "eval-source-maps"}), null, (err, stats) => {
+    .pipe(gulpif(!isProduction, webpack(Object.assign(webpackConfig, {devtool: "eval-source-maps"}), null, (err, stats) => {
       log(err, stats.toString({colors: true, errors: true}), "webpack")
     })))
     .pipe(gulpif(!isProduction, gulp.dest(path.normalize(tmpDir + "/js"))))
