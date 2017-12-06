@@ -130,6 +130,8 @@ function build(cb) {
     log(null, Hugo.output.toString(), "Hugo")
   }
 
+  browserSync.reload()
+
   return cb()
 }
 
