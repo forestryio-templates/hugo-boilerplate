@@ -55,7 +55,7 @@ gulp.task("css", (cb) => {
   // Generate production CSS, send to hugo/
   const production = gulp.src(src)
     .pipe(postcss({env: "production"}).on("error", (err) => log(err, err.toString(), "PostCSS")))
-    .pipe(gulp.dest(path.normalize(hugoDir + "/css")))
+    .pipe(gulp.dest(path.normalize(hugoDir + "/static/css")))
     .pipe(gulpif(isProduction, gulp.dest(path.normalize(buildDir + "/css"))))
     .pipe(gulpif(isProduction, browserSync.stream()))
 
@@ -79,7 +79,7 @@ gulp.task("js", (cb) => {
     .pipe(webpack(Object.assign(webpackConfig, {devtool: "nosource-source-maps"}), null, (err, stats) => {
       log(err, stats.toString({colors: true, errors: true}), "webpack")
     }))
-    .pipe(gulp.dest(path.normalize(hugoDir + "/js")))
+    .pipe(gulp.dest(path.normalize(hugoDir + "/static/js")))
     .pipe(gulpif(isProduction, gulp.dest(path.normalize(buildDir + "/js"))))
     .pipe(gulpif(isProduction, browserSync.stream()))
 

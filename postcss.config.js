@@ -9,8 +9,12 @@ module.exports = (ctx) => {
       "postcss-import": {},
       "postcss-cssnext": {},
       "cssnano": (opts.env === "production") ? {autoprefixer: false} : false,
-      "postcss-browser-reporter": {},
-      "postcss-reporter": {}
+      "postcss-reporter": {},
+      "postcss-browser-reporter": {
+        styles: {
+          display: (opts.env === "production") ? "none" : "block"
+        }
+      }
     }
   }
 }
