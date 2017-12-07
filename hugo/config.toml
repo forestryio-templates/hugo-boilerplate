@@ -14,6 +14,15 @@ title = "My New Hugo Site"
   '''
   author = "Your name"
 
+# An example menu
+# See the Hugo docs for usage in layouts
+# https://gohugo.io/content-management/menus/
+[[menu.main]]
+name = "Home"
+weight = 1
+identifier = "home"
+url = "/"
+
 # Build settings
 
 # Enable this to have links relativized by Hugo

@@ -27,7 +27,7 @@ const env = (process.env.NODE_ENV) ? process.env.NODE_ENV : "development"
 const isProduction = (env === "production")
 
 // Build Arguments
-const argsDefault = ["-v", "--source", hugoDir, "--destination", (isProduction) ? buildDir : tmpDir]
+const argsDefault = ["-v", "--source", path.resolve(hugoDir), "--destination", (isProduction) ? path.resolve(buildDir) : path.resolve(tmpDir)]
 const argsDevelopment = ["--buildDrafts", "--buildFuture", "--buildExpired"]
 
 // Make env available to Hugo
