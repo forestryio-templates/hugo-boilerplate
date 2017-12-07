@@ -7,12 +7,12 @@ languageLang = "en"
 title = "My New Hugo Site"
 
 [[params]]
-description = '''
-Write an awesome description for your new site here. You can edit this
-line in _config.yml. It will appear in your document head meta (for
-Google search results) and in your RSS feed description.
-'''
-author = "Your name"
+  description = '''
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your RSS feed description.
+  '''
+  author = "Your name"
 
 # Build settings
 
