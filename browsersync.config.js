@@ -1,8 +1,9 @@
 // Full list of options:
 // http://www.browsersync.io/docs/options/
-import gulpConfig from "./gulp.config"
+import GulpConfig from "./gulp.config"
 
 export default function(env) {
+  const gulpConfig = GulpConfig()
   const isProduction = (env === "production") || (process.env.NODE_ENV === "production")
 
   return {
@@ -16,5 +17,6 @@ export default function(env) {
     "open": false,
     "port": 3000,
     "reloadThrottle": 300,
+    "reloadDelay": 300
   }
 }

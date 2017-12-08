@@ -2,7 +2,7 @@ import BrowserSync from "browser-sync"
 import browserSyncConfig from "./browsersync.config"
 import del from "del"
 import gulp from "gulp"
-import gulpConfig from "./gulp.config.js"
+import GulpConfig from "./gulp.config.js"
 import hugo from "hugo-bin"
 import imagemin from "gulp-imagemin"
 import named from "vinyl-named"
@@ -12,6 +12,7 @@ import rename from "gulp-rename"
 import runsequence from "run-sequence"
 import {spawn} from "child_process"
 import sprite from "gulp-svg-sprite"
+import sourcemaps from "gulp-sourcemaps"
 import util from "gulp-util"
 import webpack from "webpack-stream"
 import webpackConfig from "./webpack.config"
@@ -19,6 +20,7 @@ import webpackConfig from "./webpack.config"
 const env = process.env.HUGO_ENV = process.env.NODE_ENV || "development"
 const isProduction = (env === "production")
 const browserSync = BrowserSync.create()
+const gulpConfig = GulpConfig()
 
 /**
  * @task hugo
@@ -34,19 +36,18 @@ gulp.task("hugo", (cb) => build(cb))
  */
 gulp.task("server", ["build"], () => {
   browserSync.init(browserSyncConfig())
-  gulp.watch(gulpConfig.styles.src, () => gulp.start("styles"))
-  gulp.watch(gulpConfig.scripts.src, () => gulp.start("scripts"))
-  gulp.watch(gulpConfig.images.src, () => gulp.start("images"))
-  gulp.watch(gulpConfig.svg.src, () => gulp.start("svg"))
+  gulp.watch(gulpConfig.styles.src, ["styles"])
+  gulp.watch(gulpConfig.scripts.src, ["scripts"])
+  gulp.watch(gulpConfig.images.src, ["images"])
+  gulp.watch(gulpConfig.svg.src, ["svg"])
   gulp.watch(
     [
       gulpConfig.dest + "/**/*",
-      `!${gulpConfig.styles.src}`,
-      `!${gulpConfig.scripts.src}`,
-      `!${gulpConfig.images.src}`,
-      `!${gulpConfig.svg.src}`
+      `!${gulpConfig.styles.dest}/**/*`,
+      `!${gulpConfig.scripts.dest}/**/*`,
+      `!${gulpConfig.images.dest}/**/*`
     ],
-  () => gulp.start("hugo"))
+  ["hugo"])
 })
 
 /**
@@ -73,11 +74,17 @@ gulp.task("styles", (cb) => {
  */
 gulp.task("styles:production", (cb) => {
   const task = gulp.src(gulpConfig.styles.src)
+    .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(postcss({env: "production"})
      .on("error", (err) => log(err, err.toString(), "PostCSS")))
-    .pipe(rename({
-      dirname: "/",
-      extname: ".min.css"
+    .pipe(sourcemaps.write("."))
+    .pipe(rename((path) => {
+      path.dirname = "/"
+
+      if (path.extname === ".css")
+        path.extname = ".min.css"
+
+      return path
     }))
     .pipe(gulp.dest(gulpConfig.styles.dest))
 
@@ -99,9 +106,13 @@ gulp.task("styles:development", (cb) => {
   return gulp.src(gulpConfig.styles.src)
     .pipe(postcss()
       .on("error", (err) => log(err, err.toString(), "PostCSS")))
-    .pipe(rename({
-      dirname: "/",
-      extname: ".min.css"
+    .pipe(rename((path) => {
+      path.dirname = "/"
+
+      if (path.extname === ".css")
+        path.extname = ".min.css"
+
+      return path
     }))
     .pipe(gulp.dest(gulpConfig.styles.tmp))
     .pipe(browserSync.stream())
@@ -126,8 +137,11 @@ gulp.task("scripts:production", (cb) => {
     .pipe(webpack(webpackConfig("production"), null, (err, stats) => {
       log(err, stats.toString({colors: true, errors: true, progress: true}), "Webpack")
     }))
-    .pipe(rename({
-      extname: ".min.js"
+    .pipe(rename((path) => {
+      if (path.extname === ".js")
+        path.extname = ".min.js"
+
+      return path
     }))
     .pipe(gulp.dest(gulpConfig.scripts.dest))
 
@@ -151,8 +165,11 @@ gulp.task("scripts:development", (cb) => {
     .pipe(webpack(webpackConfig()), null, (err, stats) => {
       log(err, stats.toString({colors: true, errors: true, progress: true}), "Webpack")
     })
-    .pipe(rename({
-      extname: ".min.js"
+    .pipe(rename((path) => {
+      if (path.extname === ".js")
+        path.extname = ".min.js"
+
+      return path
     }))
     .pipe(gulp.dest(gulpConfig.scripts.tmp))
     .pipe(browserSync.stream())

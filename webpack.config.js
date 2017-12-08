@@ -39,10 +39,10 @@ export default function(env) {
         // without having to require them
         // $: "jquery",
         // jQuery: "jquery",
-        "fetch": "imports-loader?this=>global!exports?global.fetch!whatwg-fetch"
+        fetch: "imports-loader?this=>global!exports?global.fetch!whatwg-fetch"
       }),
       new webpack.optimize.UglifyJsPlugin({
-        "sourcemap": true
+        sourceMap: true
       })
     ]
   }
