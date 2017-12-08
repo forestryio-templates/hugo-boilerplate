@@ -1,3 +1,6 @@
+# Configures JS linting
+# https://eslint.org/
+
 env:
   browser: true
 

@@ -1,4 +1,8 @@
+# Configures CSS Linting
+# https://stylelint.io/
+
 extends: stylelint-config-standard
+plugins: ["stylelint-scss"]
 rules:
     string-quotes: double
     no-duplicate-selectors: true

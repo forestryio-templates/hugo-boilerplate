@@ -1,20 +1,20 @@
-module.exports = (ctx) => {
-  var file = ctx.file
-  var opts = ctx.options
+// Learn more about PostCSS:
+// https://github.com/postcss/postcss
+
+module.exports = function(ctx = {}) {
+  const file = ctx.file
+  const opts = ctx.options || {}
+  const isProduction = (opts.env === "production") || (process.env.NODE_ENV === "production")
 
   return {
     parser: opts.parser ? opts.parser : false,
-    map: (opts.env === "production") ? {inline: false} : false,
+    map: (isProduction) ? {inline: false} : false,
     plugins: {
       "postcss-import": {},
       "postcss-cssnext": {},
-      "cssnano": (opts.env === "production") ? {autoprefixer: false} : false,
+      "cssnano": (isProduction) ? {autoprefixer: false} : false,
       "postcss-reporter": {},
-      "postcss-browser-reporter": {
-        styles: {
-          display: (opts.env === "production") ? "none" : "block"
-        }
-      }
+      "postcss-browser-reporter": (isProduction) ? {} : false
     }
   }
 }
