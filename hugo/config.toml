@@ -1,4 +1,5 @@
 # Site settings
+
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ .Site.Params.myvariable }}.
 baseurl = "/" # The subpath of your site, e.g. / or /blog
@@ -6,24 +7,14 @@ languageCode = "en-us"
 languageLang = "en"
 title = "My New Hugo Site"
 
-[[params]]
-  description = '''
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your RSS feed description.
-  '''
-  author = "Your name"
-
-# An example menu
-# See the Hugo docs for usage in layouts
-# https://gohugo.io/content-management/menus/
-[[menu.main]]
-name = "Home"
-weight = 1
-identifier = "home"
-url = "/"
-
 # Build settings
+
+# Set the destination the same as the Gulpfile for consistency
+destination = "../dist/"
+
+# Categories and tags disabled for an easier start
+# https://gohugo.io/getting-started/configuration/#toml-configuration
+disableKinds = ["taxonomy", "taxonomyTerm"]
 
 # Enable this to have links relativized by Hugo
 # E.g,  if your /post/first/ page contains a link 
@@ -33,6 +24,22 @@ relativeURLs = false
 # Enable to have links open in new tab
 hrefTargetBlank = false
 
-# Categories and tags disabled for an easier start
-# https://gohugo.io/getting-started/configuration/#toml-configuration
-disableKinds = ["taxonomy", "taxonomyTerm"]
+# Site Params
+[params]
+description = '''
+Write an awesome description for your new site here. You can edit this\
+line in config.yml. It will appear in your document head meta (for\
+Google search results) and in your RSS feed description.\
+'''
+author = "Your name"
+
+# Site Menus
+# See the Hugo docs for usage in layouts
+# https://gohugo.io/content-management/menus/
+[[menu.main]]
+  name = "Home"
+  weight = 1
+  identifier = "home"
+  url = "/"
+
+
