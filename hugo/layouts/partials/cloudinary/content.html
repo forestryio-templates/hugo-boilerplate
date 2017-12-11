@@ -1,0 +1,23 @@
+{{- if and (eq (getenv "HUGO_ENV") "production") (isset . "context") }}
+  {{- $context := .context }}
+  {{- $find_regex := "(?:<img.*[^>]src=\")([^\"]*)" -}}
+  {{- $context.Scratch.Set "content" .context.Content -}}
+  {{- $presetName := .preset | default "default" -}}
+  {{- $preset := (index $context.Site.Params.cloudinary.presets $presetName) -}}
+  {{- $originals := findRE $find_regex .context.Content -}}
+  {{- $context.Scratch.SetInMap "url" "context" $context -}}
+  {{- $context.Scratch.SetInMap "url" "width" ($preset.fallback_width | default "800") -}}
+  {{- range $key, $value := $preset.params -}}
+    {{- $context.Scratch.SetInMap "url" $key $value -}}
+  {{- end -}}
+  {{- range $key, $value := $originals }}
+    {{- $content := $context.Scratch.Get "content" -}}
+    {{- $context.Scratch.SetInMap "url" "image" (replaceRE "<img\\s*[^>]src=[\"|/]*" "" $value) -}}
+    {{- $cloudinary_image := (replaceRE "\n(.*)" "$1" (partial "cloudinary/url.html" ($context.Scratch.Get "url"))) -}}
+    {{- $replacement := (printf "%s%s" "<img src=\"" $cloudinary_image) -}}
+    {{- $context.Scratch.Set "content" (replace $content $value $replacement) -}}
+  {{ end -}}
+  {{- markdownify ($context.Scratch.Get "content") -}}
+{{ else }}
+  {{ .context.Content }}
+{{ end -}}

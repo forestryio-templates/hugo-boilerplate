@@ -24,6 +24,24 @@ relativeURLs = false
 # Enable to have links open in new tab
 hrefTargetBlank = false
 
+[params.cloudinary]
+cloud_name = "forestry-demo"
+use_upload = true
+
+[params.cloudinary.presets.default]
+min_width = 300
+max_width = 1200
+fallback_width = 600
+steps = 5
+sizes = "(max-width: 768px) 100vw, 1024px"
+
+[params.cloudinary.presets.default.params]
+width = 600
+height = 700
+opacity = 100
+radius = 20
+
+
 # Site Params
 [params]
 description = '''

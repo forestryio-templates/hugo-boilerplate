@@ -1,0 +1,31 @@
+{{- if and (isset . "context") (isset . "image") -}}
+  {{- $context := .context -}}
+  {{- $presetName := .preset | default "default" -}}
+  {{- $preset := (index $context.Site.Params.cloudinary.presets $presetName) -}}
+  {{- $breakpoints := (partial "cloudinary/breakpoints" (dict "context" .context "preset" $presetName "image" .image)) -}}
+  {{- $context.Scratch.SetInMap "url" "width" ($preset.fallback_width | default "800") -}}
+  {{- range $key, $value := $preset.params -}}
+    {{- $context.Scratch.SetInMap "url" $key $value -}}
+  {{- end -}}
+  {{- range $key, $value := . -}}
+    {{- $context.Scratch.SetInMap "url" $key $value -}}
+  {{- end -}}
+  {{- $src := (replaceRE "\n(.*) " "" (partial "cloudinary/url.html" ($context.Scratch.Get "url"))) -}}
+  {{- template "srcset" (dict "context" $context "sizes" $preset.sizes "src" $src "breakpoints" $breakpoints) }}
+{{- end -}}
+{{- define "srcset" -}}
+{{- $sizes := .sizes -}}
+{{- $context := .context -}}
+<p>
+  <img src="{{ .src }}" alt="{{ with .url.alt }}{{ . }}{{ else }}{{ .src }}{{ end }}" 
+  {{- with .breakpoints -}}
+    {{- $breakpoints := split . "," }}
+    srcset="{{- range $breakpoints -}}
+      {{- $context.Scratch.SetInMap "url" "width" . -}}
+      {{- $output := partial "cloudinary/url.html" ($context.Scratch.Get "url") -}}
+      {{ $output }} {{ . }}w,
+    {{- end -}}"
+      sizes="{{ $sizes | default "100vw" }}"
+  {{- end -}}/>
+</p>
+{{- end -}}

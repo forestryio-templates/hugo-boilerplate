@@ -1,0 +1,17 @@
+{{- if .IsNamedParams -}}
+  {{- $.Scratch.SetInMap "url" "context" $ -}}
+  {{- $.Scratch.SetInMap "url" "image" (.Get "image") -}}
+  {{- $availableTransforms := getJSON "/layouts/partials/cloudinary/params.json" -}}
+  {{- range $key, $param := $availableTransforms -}}
+    {{- if index $.Params $key -}}
+      {{- $value := index $.Params $key -}}
+      {{- $.Scratch.SetInMap "url" $key $value -}}
+    {{- end -}}
+  {{- end -}}
+  {{- template "img" (dict "src" (partial "cloudinary/url.html" ($.Scratch.Get "url")) "alt" (.Get "alt")) -}}
+{{- else if and (.Get 0) (.Get 1) -}}
+  {{- template "img" (dict "src" (partial "cloudinary/url.html" (dict "context" $ "image" (.Get 0))) "alt" (.Get 1)) -}}
+{{- end -}}
+{{- define "img" -}}
+  <img src="{{ .src }}" alt="{{ with .alt }}{{ . }}{{ else }}{{ .src }}{{ end }}" />
+{{- end -}}

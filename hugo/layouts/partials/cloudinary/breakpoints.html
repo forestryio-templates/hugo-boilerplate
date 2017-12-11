@@ -1,0 +1,20 @@
+{{- if and (isset . "image") (isset . "context") }}
+  {{- $context := .context -}}
+  {{- $presetName := .preset | default "default" -}}
+  {{- $preset := (index $context.Site.Params.cloudinary.presets $presetName) -}}
+  {{- $context.Scratch.Set "image" .image -}}
+  {{- $context.Scratch.Set "width" ($preset.width | default "800") -}}
+  {{- $context.Scratch.Set "breakpoints" (slice "") -}}
+  {{- $context.Scratch.Set "sizes" ($preset.sizes | default "100vw") -}}
+  {{- $context.Scratch.Set "quality" ($preset.quality | default "auto") -}}
+  {{- $context.Scratch.Set "min_width" ($preset.min_width | default 320) -}}
+  {{- $context.Scratch.Set "max_width" ($preset.max_width | default 1024) -}}
+  {{- $context.Scratch.Set "steps" ($preset.steps | default 10) -}}
+  {{- $context.Scratch.Set "step_bytes" ($preset.step_bytes | default 20) -}}
+  {{- if eq (getenv "HUGO_ENV") "production" }}
+    {{- $width_query := delimit (slice "auto:breakpoints_" ($context.Scratch.Get "min_width") "_" ($context.Scratch.Get "max_width") "_" ($context.Scratch.Get "step_bytes") "_" ($context.Scratch.Get "steps") ":json") "" -}}
+    {{- $endpoint := (partial "cloudinary/url.html" (dict "context" $context "image" ($context.Scratch.Get "image") "width" $width_query)) -}}
+    {{- $response := getJSON (printf "%s" $endpoint) -}}
+    {{- delimit $response.breakpoints "," -}}
+  {{ end -}}
+{{ end -}}

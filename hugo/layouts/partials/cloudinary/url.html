@@ -1,0 +1,26 @@
+{{- if and (isset . "image") (isset . "context") }}
+  {{- $context := .context -}}
+  {{- $site := $context.Site -}}
+  {{- $image := cond (in .image "http") .image (delimit (slice $site.BaseURL .image) "") -}}  
+  {{- if eq (getenv "HUGO_ENV") "production" }}
+    {{- $mode_config := cond (and (in $image "http") (not (in $image $site.Params.BaseURL))) "fetch" "upload" -}}
+    {{- $mode := cond ($context.Site.Params.cloudinary.use_upload) $mode_config "fetch" }}
+    {{- $cloudinary_url := (delimit (slice "https://res.cloudinary.com/" $site.Params.cloudinary.cloud_name "/image" (.social_network | default "") "/" $mode "/") "") -}}
+    {{- $path := cond (eq (getenv "HUGO_ENV") "production") $cloudinary_url $site.BaseURL -}}
+    {{- $availableTransforms := getJSON "/layouts/partials/cloudinary/params.json" -}}
+    {{- $context.Scratch.SetInMap "transforms" "width" "w_auto" -}}
+    {{- range $key, $param := $availableTransforms -}}
+      {{- if (isset $ $key) -}}
+        {{- $value := (index $ $key) -}}
+        {{- $context.Scratch.SetInMap "transforms" $key (delimit (slice $param.key "_" $value) "") -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $transforms := $context.Scratch.Get "transforms" -}}
+    {{- $transforms := delimit $transforms "," -}}
+    {{- $image := replaceRE "(^/)" "" $image -}}
+    {{- $image := delimit (slice $path ($transforms) "/" $image) "" -}}
+    {{- $image -}}
+  {{ else }}
+    {{- $image -}}
+  {{ end -}}
+{{ end -}}
