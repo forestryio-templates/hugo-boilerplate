@@ -36,10 +36,10 @@ gulp.task("hugo", (cb) => build(cb))
  */
 gulp.task("server", ["build"], () => {
   browserSync.init(browserSyncConfig())
-  gulp.watch(gulpConfig.styles.src, ["styles"])
-  gulp.watch(gulpConfig.scripts.src, ["scripts"])
-  gulp.watch(gulpConfig.images.src, ["images"])
-  gulp.watch(gulpConfig.svg.src, ["svg"])
+  gulp.watch(gulpConfig.styles.watch, ["styles"])
+  gulp.watch(gulpConfig.scripts.watch, ["scripts"])
+  gulp.watch(gulpConfig.images.watch, ["images"])
+  gulp.watch(gulpConfig.svg.watch, ["svg"])
   gulp.watch(
     [
       gulpConfig.dest + "/**/*",
@@ -219,8 +219,7 @@ function build(cb) {
 
   generator.on("error", (err) => {
     log(err, err.toString(), "Hugo")
-    browserSync.notify("Build Failed")
-    return cb("Build failed")
+    cb("Build failed")
   })
 
   generator.on("close", (code) => {
