@@ -3,10 +3,10 @@
 import {resolve} from "path"
 
 export default function(env) {
-  const src = resolve(__dirname, "src/")
-  const dest = resolve(__dirname, "hugo/")
-  const tmp = resolve(__dirname, ".tmp/")
-  const build = resolve(__dirname, "dist/")
+  const src = "src/"
+  const dest = "hugo/"
+  const tmp = ".tmp/"
+  const build = "dist/"
   const isProduction = process.env.NODE_ENV === "production"
 
   return {
@@ -15,31 +15,35 @@ export default function(env) {
     tmp: tmp,
     build: build,
     hugoArgs: {
-      default: ["-v", "--source", dest, "--destination", build],
+      default: ["-v", "--source", resolve(dest), "--destination", resolve(build)],
       development: ["-b", "http://localhost:3000", "--buildDrafts", "--buildFuture", "--buildExpired"],
+      preview: ["-b", "http://localhost:3000"],
       production: []
     },
     styles: {
       src:
       [
-        src + "/css/*.+(css|scss|sass)",
-        src + "/scss/*+(css|scss|sass)"
+        src + "css/*.+(css|scss|sass)",
+        src + "scss/*.+(css|scss|sass)"
       ],
-      dest: dest + "/static/css",
-      tmp: tmp + "/css"
+      watch:
+      [
+        src + "css/**/*.+(css|scss|sass)",
+        src + "scss/**/*.+(css|scss|sass)"
+      ],
+      dest: dest + "static/css",
+      tmp: tmp + "css"
     },
     scripts: {
-      src: src + "/js/*+(js|jsx)",
-      dest: dest + "/static/js",
-      tmp: tmp + "/js"
-    },
-    images: {
-      src: src + "/img/**/*.+(png|jpg|jpeg|gif|svg|webp)",
-      dest: dest + "/static/img"
+      src: src + "js/*+(js|jsx)",
+      watch: src + "js/**/*+(js|jsx)",
+      dest: dest + "static/js/",
+      tmp: tmp + "js/"
     },
     svg: {
-      src: src + "/img/**/*.svg",
-      dest: dest + "/layouts/partials/svg",
+      src: src + "img/**/*.svg",
+      watch: src + "img/**/*.svg",
+      dest: dest + "static/svg/",
       config: {
         dest: ".",
         mode: {

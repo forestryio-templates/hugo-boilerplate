@@ -14,11 +14,11 @@ export default function(env) {
       // Any third-party deps added via a <script> tag
       // can be defined here so that they can be required
       // in your application's JS files
-      // jquery: ["jQuery", "jquery", "$"]
+      // "jquery": "jQuery"
     },
     resolve: {
       // Can be used to create aliases for imports
-      // modules: path.resolve(__dirname, 'src/js/example/utilities/')
+      // utilities: path.resolve(__dirname, 'src/js/example/utilities/')
       // => import * from "utilities/filename"
     },
     module: {

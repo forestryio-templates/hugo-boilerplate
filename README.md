@@ -65,7 +65,7 @@ npm run build
 .
 ├── .tmp/                  // Temporary directory for development server
 ├── dist/                  // The production build
-├── hugo/                  // The Hugo project, with all content and static files
+├── hugo/                  // The Hugo project; content, data and static files
 |   ├── .forestry/         // Contains Forestry.io configuration files
 |   ├── content/           // Where all site content is stored 
 |   ├── data/              // TOML, YAML or JSON files containing site data 
@@ -79,23 +79,24 @@ npm run build
 |   |   └── uploads/       // Where user uploads are stored
 |   └── config.toml        // The Hugo configuration file
 └─── src/
-     ├── css               // CSS source files to be compiled to /css/
-     ├── scss              // Sass source files to be compiled to /css/
+     ├── css               // CSS/SCSS source files to be compiled to /css/
      ├── js                // JS source files to be compiled to /js/
      └── img               // Unoptimized raw image source files to be compiled to /img/
 ```
 
 # Images
-Images found in `src/img/` will be optimized and compressed and sent to `jekyll/img/` for usage in your layouts and content.
+Images found in `src/img/` will be optimized and compressed and sent to `hugo/static/img/` for usage in your layouts & theme.
 
 # Inline SVG
-Any SVGs found in `src/img/` will be combined into a single SVG Sprite at `jekyll/partials/sprite.symbol.svg`
+Any SVGs found in `src/img/` will be combined into a single SVG Sprite at `hugo/static/svg/sprite.symbol.svg`.
 
-This can then be used in content or layouts as a Jekyll partial:
+This boilerplate comes with a simple partial for using SVGs in your layouts. You can select an svg by passing in it's ID.
 
 ```
-// todo
+{{/* Using a logo stored at src/img/github.svg */}}
+{{ partial "svg" (dict "id" "github" "class" "optional-class" "width" 32 "height" 32) -}}
 ```
+**Note: the `class`, `width`, and `height` params are optional**
 
 # Testing
 This boilerplate comes with standard [ESLint](https://eslint.org/) and [StyleLint](https://github.com/stylelint/stylelint) configurations that will lint your CSS and JS for errors or common style issues, which work with most popular IDEs.
@@ -127,21 +128,22 @@ All build tasks are handled by Gulp and are located in `gulpfile.babel.js`. All 
 All build source and destination paths can be configured from `gulp.config.js`.
 
 ## Hugo
-The build commands for Hugp can be configured from `gulp.config.js`. Build commands are set based on the `NODE_ENV` environment variable.
+The build commands for Hugp can be configured from `gulp.config.js`. Build commands are set based on the `NODE_ENV` environment variable. You can optionally load different args using the `HUGO_ARGS` environment variable.
 
 Four options are available:
 - `default`: the default build commands that are always run
 - `development`: additional build commands for the development server
-- `production`: additional build commands for production builds and preview server
+- `preview`: additional build commands for a production development server
+- `production`: additional build commands for production builds
 
 ## BrowserSync Development Server
-The configuration for BrowserSync is found in `browsersync.config.js`
+The configuration for BrowserSync is found in `.browsersyncrc.js`
 
 ## CSS/SASS
-The configuration for PostCSS is found in `postcss.config.js`
+The configuration for PostCSS is found in `.postcssrc.js`
 
 ## Javascript
-The configuration for Webpack is found in `webpack.config.js`
+The configuration for Webpack is found in `.webpackrc.js`
 
 ## Browser support
 Both PostCSS and Webpack use `.browserslistrc` to decide on browser support when compiling.
