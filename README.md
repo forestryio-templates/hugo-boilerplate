@@ -1,15 +1,15 @@
 # Hugo Boilerplate
 **A Hugo boilerplate for building modern websites 🌲**
 
-TThis boilerplate wraps [Hugo](gohugo.io) with [Gulp](https://gulpjs.com/) as your asset pipeline.
+This boilerplate wraps [Hugo](gohugo.io) with [Gulp](https://gulpjs.com/) as your local development build pipeline.
 
 [PostCSS](http://postcss.org/) and [Webpack](https://webpack.js.org/) + [Babel](https://babeljs.io/) are used for CSS and JS compiling & transpiling.
-
-[ImageMin](https://github.com/imagemin/imagemin) is used to optimize and compress images, and [SVG Sprite](https://github.com/jkphl/svg-sprite) is used to generate a SVG Sprite.
 
 [BrowserSync](https://www.browsersync.io/) is used for providing a modern local development experience, allowing you to preview your site on multiple devices in sync.
 
 [BrowsersList](https://github.com/ai/browserslist) is used for configuring Browser support.
+
+[SVG Sprite](https://github.com/jkphl/svg-sprite) is used to generate an SVG Sprite.
 
 # Installation
 
@@ -34,7 +34,7 @@ All development tasks are performed using npm run. See `"scripts"` in [package.j
 Local development is powered by BrowserSync, you will be able to develop sites rapidly through:
 
 - A local development server at `http://localhost:3000/`.
-- Automatic CSS & JS updates without reloading the page
+- Automatic CSS updates without reloading the page
 - Automatic page reloads when content is changed
 
 Running the local development server is as simple as running:
@@ -75,17 +75,12 @@ npm run build
 |   ├── static/            // Where all static files live
 |   |   ├── css/           // Where compiled CSS files live
 |   |   ├── js/            // Where compiled JS files live
-|   |   ├── img/           // Where theme images live
 |   |   └── uploads/       // Where user uploads are stored
 |   └── config.toml        // The Hugo configuration file
 └─── src/
      ├── css               // CSS/SCSS source files to be compiled to /css/
-     ├── js                // JS source files to be compiled to /js/
-     └── img               // Unoptimized raw image source files to be compiled to /img/
+     └── js                // JS source files to be compiled to /js/
 ```
-
-# Images
-Images found in `src/img/` will be optimized and compressed and sent to `hugo/static/img/` for usage in your layouts & theme.
 
 # Inline SVG
 Any SVGs found in `src/img/` will be combined into a single SVG Sprite at `hugo/static/svg/sprite.symbol.svg`.
@@ -170,6 +165,9 @@ This repository comes with basic example content pre-configured to work with For
 - Fork this repository to your account
 - [Sign up for a Forestry account](https://app.forestry.io/signup), and import this repository as an "Existing Site"
 - When prompted for the "Project root", enter `hugo`
+
+# Contributing
+All contributions are welcome! Please see our [Code of Conduct](/.git/CODE_OF_CONDUCT.md) & [Support][/.github/SUPPORT.md] guidelines. 
 
 ## Licensing
 This boilerplate project is released under the [MIT license](/LICENSE).
