@@ -167,7 +167,7 @@ This repository comes with basic example content pre-configured to work with For
 - When prompted for the "Project root", enter `hugo`
 
 # Contributing
-All contributions are welcome! Please see our [Code of Conduct](/.git/CODE_OF_CONDUCT.md) & [Support][/.github/SUPPORT.md] guidelines. 
+All contributions are welcome! Please see our [Code of Conduct](/.git/CODE_OF_CONDUCT.md) & [Support](/.github/SUPPORT.md) guidelines. 
 
 ## Licensing
 This boilerplate project is released under the [MIT license](/LICENSE).
