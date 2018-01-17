@@ -21,16 +21,8 @@ export default function(env) {
       production: []
     },
     styles: {
-      src:
-      [
-        src + "css/*.+(css|scss|sass)",
-        src + "scss/*.+(css|scss|sass)"
-      ],
-      watch:
-      [
-        src + "css/**/*.+(css|scss|sass)",
-        src + "scss/**/*.+(css|scss|sass)"
-      ],
+      src: src + "css/*.css",
+      watch: src + "css/**/*.css",
       dest: dest + "static/css",
       tmp: tmp + "css"
     },
