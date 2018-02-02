@@ -5,6 +5,7 @@ import fs from "fs"
 import gulp from "gulp"
 import GulpConfig from "./gulp.config.js"
 import hugo from "hugo-bin"
+import imagemin from "gulp-imagemin"
 import named from "vinyl-named"
 import newer from "gulp-newer"
 import {dirname, basename} from "path"
@@ -45,8 +46,20 @@ gulp.task("hugo", cb => build(cb))
 gulp.task("server", ["build"], () => {
   browserSync.init(browserSyncConfig())
   gulp.watch(gulpConfig.styles.watch, ["styles"])
+    .on('error', (err) => {
+      log(err, err.toString(), ["Styles"])
+      this.emit(end)
+    })
   gulp.watch(gulpConfig.scripts.watch, ["scripts"])
+    .on('error', (err) => {
+      log(err, err.toString(), ["Scripts"])
+      this.emit(end)
+    })
   gulp.watch(gulpConfig.svg.watch, ["svg"])
+    .on('error', (err) => { 
+      log(err, err.toString(), ["SVG"])
+      this.emit(end)
+    })
   gulp.watch(
     [
       gulpConfig.dest + "/**/*",
@@ -55,6 +68,10 @@ gulp.task("server", ["build"], () => {
     ],
     ["hugo"]
   )
+    .on('error', (err) => {
+      log(err, err.toString(), ["Hugo"])
+      this.emit(end)
+    })
 })
 
 /**
@@ -63,7 +80,7 @@ gulp.task("server", ["build"], () => {
  * compiles the static site with Hugo
  */
 gulp.task("build", ["clean"], cb => {
-  runsequence(["styles", "scripts", "svg"], "hugo", cb)
+  runsequence(["styles", "scripts", "images", "svg"], "hugo", cb)
 })
 
 /**
@@ -195,6 +212,20 @@ gulp.task("scripts:development", cb => {
       })
     )
     .pipe(gulp.dest(gulpConfig.scripts.tmp))
+    .pipe(browserSync.stream())
+})
+
+/**
+ * @task images
+ * Optimizes all images
+ * and streams it if its a development server environment
+ */
+gulp.task("images", () => {
+  return gulp
+    .src(gulpConfig.images.src)
+    .pipe(newer(gulpConfig.images.dest))
+    .pipe(imagemin([], {verbose: isProduction ? true : false}))
+    .pipe(gulp.dest(gulpConfig.images.dest))
     .pipe(browserSync.stream())
 })
 
