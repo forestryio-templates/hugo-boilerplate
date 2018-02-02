@@ -60,6 +60,20 @@ npm run build
 ```
 *The fresh production build of your site will end up in the `dist/` directory.*
 
+## Hugo Commands
+All of Hugo's [CLI commands](https://gohugo.io/commands/) can be run through NPM by running:
+
+```
+npm run hugo -- <command> --<param>
+```
+
+For example:
+
+```
+npm run hugo -- new posts/example-post.md
+// => creates a new post at hugo/content/posts/example-post.md
+```
+
 # Project Structure
 ```
 .
