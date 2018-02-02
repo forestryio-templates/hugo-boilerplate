@@ -32,6 +32,11 @@ export default function(env) {
       dest: dest + "static/js/",
       tmp: tmp + "js/"
     },
+    images: {
+      src: src + "img/**/*.+(png|jpg|jpeg|gif|svg|webp)",
+      watch: src + "img/**/*.+(png|jpg|jpeg|gif|svg|webp)",
+      dest: dest + "static/img/"
+    },
     svg: {
       src: src + "img/**/*.svg",
       watch: src + "img/**/*.svg",
