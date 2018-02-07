@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "gulp server",
-    "preview": "cross-env NODE_ENV=production HUGO_ARGS=preview gulp server",
+    "preview": "cross-env NODE_ENV=production GENRATOR_ARGS=preview gulp server",
     "build": "cross-env NODE_ENV=production gulp build",
     "clean": "gulp clean",
     "hugo": "node_modules/.bin/hugo --source hugo/",
