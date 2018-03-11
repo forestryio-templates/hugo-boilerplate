@@ -14,7 +14,7 @@ export default function(env) {
     "https": false,
     "injectChanges": true,
     "notify": true,
-    "open": true,
+    "open": false,
     "port": 3000,
     "reloadThrottle": 300,
     "reloadDelay": 300
