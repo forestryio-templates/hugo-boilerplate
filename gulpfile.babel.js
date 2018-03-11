@@ -49,17 +49,14 @@ gulp.task('server', ['build'], () => {
   gulp.watch(gulpConfig.styles.watch, ['styles'])
     .on('error', (err) => {
       log(err, err.toString(), ['Styles'])
-      this.emit('end')
     })
   gulp.watch(gulpConfig.scripts.watch, ['scripts'])
     .on('error', (err) => {
       log(err, err.toString(), ['Scripts'])
-      this.emit('end')
     })
   gulp.watch(gulpConfig.svg.watch, ['svg'])
     .on('error', (err) => {
       log(err, err.toString(), ['SVG'])
-      this.emit('end')
     })
   gulp.watch(
     [
@@ -71,7 +68,6 @@ gulp.task('server', ['build'], () => {
   )
     .on('error', (err) => {
       log(err, err.toString(), [gulpConfig.generator.label])
-      this.emit('end')
     })
 })
 
