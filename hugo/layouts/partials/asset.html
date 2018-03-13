@@ -1,0 +1,5 @@
+{{- if eq (getenv "NODE_ENV") "production" | or (eq .Site.Params.env "production") -}}
+{{- index .Site.Data.revmanifest .asset | default .asset -}}
+{{- else -}}
+{{- index .asset -}}
+{{- end -}}

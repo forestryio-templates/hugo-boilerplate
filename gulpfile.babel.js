@@ -37,11 +37,11 @@ gulp.task('generator', cb => build(cb))
  * Builds all static assets, and then
  * compiles the static site
  */
-gulp.task('build', ['clean'], cb => {
+gulp.task('build', ['clean:dist'], cb => {
   runsequence(['styles', 'scripts', 'images', 'svg'], 'generator', cb)
 })
 
-gulp.task('build:prod', ['clean:prod'], cb => {
+gulp.task('build:prod', ['clean:dist', 'clean:static'], cb => {
   runsequence(['styles', 'scripts', 'images', 'svg'], 'revision', 'generator', cb)
 })
 
@@ -245,12 +245,12 @@ gulp.task('svg', () => {
  * @task clean
  * Cleans the build and temp directories
  */
-gulp.task('clean', () => {
+gulp.task('clean:dist', () => {
   return del([gulpConfig.tmp, gulpConfig.build], {dot: true})
 })
 
-gulp.task('clean:prod', () => {
-  return del([gulpConfig.tmp, gulpConfig.build, gulpConfig.scripts.dest, gulpConfig.styles.dest], {dot: true})
+gulp.task('clean:static', () => {
+  return del([gulpConfig.scripts.dest, gulpConfig.styles.dest], {dot: true})
 })
 
 gulp.task('revision', () => {
@@ -264,7 +264,7 @@ gulp.task('revision', () => {
     )
     .pipe(rev())
     .pipe(gulp.dest('hugo/static'))
-    .pipe(rev.manifest())
+    .pipe(rev.manifest('revmanifest.json'))
     .pipe(gulp.dest('hugo/data/'))
 })
 

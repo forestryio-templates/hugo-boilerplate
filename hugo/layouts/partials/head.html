@@ -8,6 +8,6 @@
     <title>{{ if .Page.Title }}{{ .Page.Title }} - {{ end }}{{ .Site.Title }}</title>
     <meta name="author" content="{{ $.Param "author" }}">
     <meta name="description" content="{{ $.Param "description" }}">
-    <link rel="stylesheet" href="{{ "css/styles.min.css" | relURL }}"/>
+    <link rel="stylesheet" href="{{ partial "asset.html" (dict "Site" .Site "asset" "css/styles.min.css") | relURL}}">
   </head>
   <body>
