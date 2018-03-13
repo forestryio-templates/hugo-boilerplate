@@ -15,7 +15,9 @@ import sourcemaps from 'gulp-sourcemaps'
 import util from 'gulp-util'
 import webpack from 'webpack-stream'
 import webpackConfig from './.webpackrc.js'
+import rev from 'gulp-rev'
 
+const path = require('path')
 const browserSync = BrowserSync.create()
 const gulpConfig = GulpConfig()
 const generatorEnvVar = gulpConfig.generator.label.toUpperCase() + '_ENV'
@@ -37,6 +39,10 @@ gulp.task('generator', cb => build(cb))
  */
 gulp.task('build', ['clean'], cb => {
   runsequence(['styles', 'scripts', 'images', 'svg'], 'generator', cb)
+})
+
+gulp.task('build:prod', ['clean:prod'], cb => {
+  runsequence(['styles', 'scripts', 'images', 'svg'], 'revision', 'generator', cb)
 })
 
 /**
@@ -241,6 +247,25 @@ gulp.task('svg', () => {
  */
 gulp.task('clean', () => {
   return del([gulpConfig.tmp, gulpConfig.build], {dot: true})
+})
+
+gulp.task('clean:prod', () => {
+  return del([gulpConfig.tmp, gulpConfig.build, gulpConfig.scripts.dest, gulpConfig.styles.dest], {dot: true})
+})
+
+gulp.task('revision', () => {
+  return gulp
+    .src(
+      [
+        path.join('hugo/static/css/*.css'),
+        path.join('hugo/static/js/*.js')
+      ],
+      { base: 'hugo/static' }
+    )
+    .pipe(rev())
+    .pipe(gulp.dest('hugo/static'))
+    .pipe(rev.manifest())
+    .pipe(gulp.dest('hugo/data/'))
 })
 
 /**
