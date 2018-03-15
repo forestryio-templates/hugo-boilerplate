@@ -257,15 +257,15 @@ gulp.task('revision', () => {
   return gulp
     .src(
       [
-        path.join('hugo/static/css/*.css'),
-        path.join('hugo/static/js/*.js')
+        path.join(`${gulpConfig.styles.dest}/*.css`),
+        path.join(`${gulpConfig.scripts.dest}/*.js`)
       ],
-      { base: 'hugo/static' }
+      { base: `${gulpConfig.dest}/static` }
     )
     .pipe(rev())
-    .pipe(gulp.dest('hugo/static'))
+    .pipe(gulp.dest(`${gulpConfig.dest}/static`))
     .pipe(rev.manifest('revmanifest.json'))
-    .pipe(gulp.dest('hugo/data/'))
+    .pipe(gulp.dest(`${gulpConfig.dest}/data/`))
 })
 
 /**
