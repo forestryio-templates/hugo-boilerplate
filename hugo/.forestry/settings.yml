@@ -25,6 +25,7 @@ build:
   preview_env:
   - HUGO_ENV=staging
   - HUGO_VERSION=0.52
+  - BUILD_DIR=site
   publish_env:
   - HUGO_ENV=production
   - HUGO_VERSION=0.52
