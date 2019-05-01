@@ -1,9 +1,35 @@
 ---
-upload_path: "/hugo/uploads/:year:/:month:/:day:"
-frontmatter_file_url_template: "/uploads/:year:/:month:/:day:"
-body_file_url_template: "/uploads/:year:/:month:/:day:"
 new_page_extension: md
 auto_deploy: false
 admin_path: 
 webhook_url: 
-collections: 
+sections:
+- type: directory
+  path: hugo/content
+  label: Pages
+  create: all
+  match: "*"
+- type: directory
+  path: hugo/content/posts
+  label: Posts
+  create: all
+  match: "**/*"
+upload_dir: hugo/uploads
+public_path: "/uploads"
+front_matter_path: ''
+use_front_matter_path: false
+file_template: ":year:/:month:/:day:/:filename:"
+build:
+  preview_command: hugo -E -F -D -b $DEPLOY_URL -d public
+  publish_command: hugo -d public
+  preview_env:
+  - HUGO_ENV=staging
+  - HUGO_VERSION=0.55.2
+  publish_env:
+  - HUGO_ENV=production
+  - HUGO_VERSION=0.55.2
+  preview_output_directory: public
+  output_directory: public
+  instant_preview_command: hugo server -D -E -F --port 8080 --bind 0.0.0.0 --renderToDisk
+    -d public
+version: 0.55.2
